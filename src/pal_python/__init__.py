@@ -5,3 +5,4 @@ from pal_launch import *
 from pal_path import *
 from pal_publishers import *
 from pal_thread import *
+from pal_rpc import *
