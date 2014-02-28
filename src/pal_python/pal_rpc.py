@@ -25,17 +25,11 @@ import threading
 import rospy
 import actionlib
 
-# python3 compatibility
-try:
-    from queue import Queue, Empty
-except ImportError:
-    from Queue import Queue, Empty
-
 
 class EasyActionServer:
     """
     Supposedly easier to use than the SimpleActionServer.
-    This action sever will replace service providers. It provides a
+    This action server will replace ROS services. It provides a
     simplistic asynchronous RPC call interface with single goal.
     The cancel callback can be optionaly specified to allow for interruptible
     actions.
@@ -49,8 +43,11 @@ class EasyActionServer:
 
     """
     def __init__(self, ac_name, ac_type, cb, immediate_success=True):
+        """ If immediate_success is False, the user will have to call reply()
+        to set_succeeded() the goal. Otherwise, the goal will be automatically
+        set to succeeded after the callback return. """
         self._cb = cb
-        self._clcl_cb = None
+        self._opt_cancel_cb = None
         self._ghdl = None
         self._immed = immediate_success
         self._ac = actionlib.ActionServer(ac_name, ac_type, auto_start=False,
@@ -61,6 +58,10 @@ class EasyActionServer:
     def reply(self, result=None):
         """ Only useful if `immediate_success=False` was given to the
         constructor. Will mark the action as succeeded. """
+        if self._immed:
+            rospy.logwarn("EasyActionServer.reply() has no "
+                          "effect if initialized with immediate_success=True")
+            return
         if self._ghdl is not None:  # goal has not been canceled or pre-empted
             self._succeed(result)
 
@@ -68,7 +69,11 @@ class EasyActionServer:
         """ Only useful if `immediate_success=False` was given to the
         constructor (otherwise the action will immediately succeed). Will
         register an optional cancel callback. """
-        self._clcl_cb = cancel_cb
+        if self._immed:
+            rospy.logwarn("EasyActionServer.set_cancel_cb() has no "
+                          "effect if initialized with immediate_success=True")
+            return
+        self._opt_cancel_cb = cancel_cb
 
     def _succeed(self, result=None):
         if self._ghdl is None:
@@ -91,8 +96,8 @@ class EasyActionServer:
             rospy.logerr("trying to cancel an invalid goal handle")
             return
         self._cancel()
-        if self._clcl_cb is not None:
-            self._clcl_cb()
+        if self._opt_cancel_cb is not None:
+            self._opt_cancel_cb()
 
     def _cancel(self):
         if self._ghdl is None:
@@ -119,17 +124,22 @@ class AsyncServiceClient:
         self._online = False
         self._srv_name = srv_name
         self._srv_type = srv_type
-        self._requests = Queue()
+        self._request = None
+        self._wakeup = threading.Condition()
         threading.Thread(target=self._register_proxy,
                          args=[persistent]).start()
         threading.Thread(target=self._worker).start()
 
     def call(self, *args):
         """ Asynchronously send a request to the service provider. The result
-        will be ignored. """
-        #XXX: silently discarding service calls when proxy not registered
+        will be ignored.
+        NOTE: the current implementation silently discards requests if the
+        service is not available. If this is not what you want, consider using
+        something else."""
         if self._online:
-            self._requests.put(args)
+            with self._wakeup:
+                self._request = args
+                self._wakeup.notify_all()
 
     def _register_proxy(self, persistent):
         try:
@@ -145,15 +155,16 @@ class AsyncServiceClient:
 
     def _worker(self):
         while not rospy.is_shutdown():
-            try:
-                req = self._requests.get(block=True, timeout=1.0)
-            except Empty:
+            if self._request is None:
+                with self._wakeup:
+                    self._wakeup.wait(1.0)
                 continue
-            if self._requests.empty():  # this will discard requests when newer
-                try:
-                    self._call_service(*req)  # ones are in the queue
-                except rospy.ROSInterruptException:
-                    break
+            req = self._request
+            self._request = None
+            try:
+                self._call_service(*req)  # ones are in the queue
+            except rospy.ROSInterruptException:
+                break
 
     def _call_service(self, *args):
         try:

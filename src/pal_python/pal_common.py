@@ -28,6 +28,7 @@ import rospy
 import rosgraph
 from roslib import scriptutil
 
+
 def configurable(cls):
     """
     This class decorator will add the _read_config method to any class.
@@ -35,14 +36,15 @@ def configurable(cls):
     attributes. The primary use of this is in conjunction with parsed
     config files or ROS parameters.
 
-    A class attribute struct 'defaults' can be used to set the value of
-    optional parameters.
+    A class attribute struct 'defaults' defines the set of admissible
+    parameters and their default values. This means that ALL parameters
+    are optional.
 
     Example:
 
         @configurable
         class Foo:
-            defaults = {  # 'foo' is not optional
+            defaults = {
                 'bar': 'hoge',
                 'opt': 42,
             }
@@ -50,7 +52,6 @@ def configurable(cls):
                 self._read_config(cfg)
 
         # this will assign
-        #   f.foo = 37
         #   f.bar = "baz"
         #   f.opt = 42
         f = Foo({'foo': 37, 'bar': 'baz'})
@@ -77,6 +78,7 @@ def is_simulation():
     except (rosgraph.masterapi.MasterError, KeyError):
         return False
 
+
 def is_node_running(node):
     """
     Return true if the given node is running.
@@ -84,6 +86,7 @@ def is_node_running(node):
     master = scriptutil.get_master()
     node_info = master.lookupNode(rospy.get_name(), node)
     return node_info[0] == 1
+
 
 # TODO: Move this to another file?
 # TODO: Replace return value with exceptions?
@@ -108,6 +111,7 @@ def stop_node(node):
         rospy.logwarn('Couldn\'t stop "%s": %s', node, str(e))
         return False
     return result[0] == 1
+
 
 # Decorator for defining class (vs. instance) properties:
 class classproperty(property):

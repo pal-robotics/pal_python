@@ -34,7 +34,7 @@ from .pal_rpc import AsyncServiceClient
 
 
 @configurable
-class Color(object):
+class LedColor(object):
 
     defaults = {
         'rgb': [0.0, 0.0, 0.0],
@@ -53,7 +53,7 @@ class ReemLedClient:
 
     Intended use:
 
-        blue = Color({'rgb': [0.0, 0.0, 1.0]})
+        blue = LedColor({'rgb': [0.0, 0.0, 1.0]})
         led_cl = ReemLedClient(blue)
         led_cl.fire(1.0)  # will set the color of the ears to blue for 1 sec
 
