@@ -56,8 +56,8 @@ def tts_speak(text, wait_before_speaking=0):
     tts_goal.wait_before_speaking = rospy.Duration(wait_before_speaking)
     tts_goal.text = text
 
-    rospy.logdebug('Sent speak command with "%s" (wait: %.3f seconds).' % (text,
-        wait_before_speaking))
+    rospy.logdebug('Sent speak command with "%s" (wait: %.3f seconds).' % (
+        text, wait_before_speaking))
     __tts_client.send_goal(tts_goal)
     __tts_client.wait_for_result()
 
