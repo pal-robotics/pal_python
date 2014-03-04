@@ -26,6 +26,7 @@ import xmlrpclib
 
 import rospy
 import rosgraph
+import copy
 from roslib import scriptutil
 
 
@@ -65,7 +66,7 @@ def configurable(cls):
                 if c in cfg:
                     setattr(self, c, cfg[c])
                 else:
-                    setattr(self, c, self.defaults[c])
+                    setattr(self, c, copy.deepcopy(self.defaults[c]))
     return Configurable
 
 
