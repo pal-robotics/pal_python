@@ -76,7 +76,7 @@ class ReemLedClient:
             )
 
     def fire(self, duration=1.0):
-        if self.color.blinking:
+        if self._color.blinking:
             self._fire_blink(duration)
         else:
             self._fire_flat(duration)
