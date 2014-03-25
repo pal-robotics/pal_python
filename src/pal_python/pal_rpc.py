@@ -109,8 +109,7 @@ class EasyActionServer:
 
 class AsyncServiceClient:
     """
-    Simple non-blocking service client for cases when nobody cares about
-    the return value. Who does anyway?
+    Simple non-blocking service client.
 
     Intended use:
 
@@ -119,6 +118,15 @@ class AsyncServiceClient:
         req.bar = "baz"
         srv_cl.call(req)
 
+    If you want to use the result:
+
+        def callback(result):
+            rospy.loginfo(result)
+        srv_cl.call(req, cb=callback)
+
+    Note that the callback (if not None) will be called from within a worker
+    thread. If the service is not available, or there is some error, the callback
+    won't be called.
     """
     def __init__(self, srv_name, srv_type, persistent=False):
         self._online = False
@@ -130,16 +138,25 @@ class AsyncServiceClient:
                          args=[persistent]).start()
         threading.Thread(target=self._worker).start()
 
-    def call(self, *args):
-        """ Asynchronously send a request to the service provider. The result
-        will be ignored.
-        NOTE: the current implementation silently discards requests if the
-        service is not available. If this is not what you want, consider using
-        something else."""
+    def call(self, *args, **kwargs):
+        """ Asynchronously send a request to the service provider.
+
+        Usage:
+          call(*args, cb=None)
+
+        Returns False if the service is not available. Otherwise, if `cb'
+        is not None and there is no error, it'll be called with the result.
+        """
+        if kwargs and kwargs.keys() != ['cb']:
+            raise ValueError('The only valid keyword argument is "cb".')
+        cb = kwargs.get('cb', None)
+
         if self._online:
             with self._wakeup:
-                self._request = args
+                self._request = (args, cb)
                 self._wakeup.notify_all()
+            return True
+        return False
 
     def _register_proxy(self, persistent):
         try:
@@ -159,16 +176,18 @@ class AsyncServiceClient:
                 with self._wakeup:
                     self._wakeup.wait(1.0)
                 continue
-            req = self._request
+            req, cb = self._request
             self._request = None
             try:
-                self._call_service(*req)  # ones are in the queue
+                result = self._call_service(*req)  # ones are in the queue
+                if cb:
+                    cb(result)
             except rospy.ROSInterruptException:
                 break
 
     def _call_service(self, *args):
         try:
-            self._srvc(*args)
+            return self._srvc(*args)
         except rospy.ServiceException as e:
             rospy.logerr("service call to {} failed: {}"
                          .format(self._srv_name, e))
