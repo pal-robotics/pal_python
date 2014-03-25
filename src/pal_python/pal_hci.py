@@ -71,7 +71,7 @@ class ReemLedClient:
             )
             ReemLedClient._blink_color_client = AsyncServiceClient(
                 'ledManager/TimedBlinkEffect',
-                PDMS.TimedColourEffect,
+                PDMS.TimedBlinkEffect,
                 persistent=True
             )
 
