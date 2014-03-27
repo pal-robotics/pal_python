@@ -103,7 +103,7 @@ def stop_node(node):
             rospy.loginfo('Unknown node "%s"; ignored stop request.', node)
             return True
         else:
-            rospy.logwarn('Couldn\'t stop "%s", problem retrieving information: %s', node, str(e))
+            rospy.logwarn('Couldn\'t stop "%s", problem retrieving information: %s', node, msg)
             return False
     try:
         proxy = xmlrpclib.ServerProxy(uri)
