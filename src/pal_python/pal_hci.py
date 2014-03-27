@@ -69,11 +69,11 @@ class ReemLedClient(object):
     _blink_color_client = None
     _cancel_effect_client = None
 
-    _last_color = None
-    _last_effect = None
-
-    def __init__(self, color):
+    def __init__(self, color, priority=96):
         self._color = color
+        self._priority = priority
+        self._last_color = None
+        self._last_effect = None
         if ReemLedClient._flat_color_client is None:
             ReemLedClient._flat_color_client = AsyncServiceClient(
                 'ledManager/TimedColourEffect',
@@ -104,9 +104,9 @@ class ReemLedClient(object):
 
     def _start_effect(self, color, duration):
         if self._color.blinking:
-            return _BlinkLedController(color, duration)
+            return _BlinkLedController(color, duration, self._priority)
         else:
-            return _ColorLedController(color, duration)
+            return _ColorLedController(color, duration, self._priority)
 
 class _LedController(object):
 
@@ -155,13 +155,13 @@ class _ColorLedController(_LedController):
 
     _request = None
 
-    def __init__(self, color, duration):
+    def __init__(self, color, duration, priority):
         super(_ColorLedController, self).__init__(ReemLedClient._flat_color_client)
 
         # Create request object
         effect = PDMS.TimedColourEffectRequest()
         effect.leds.ledMask = PDM.LedGroup.LEFT_EAR | PDM.LedGroup.RIGHT_EAR
-        effect.priority = 96
+        effect.priority = priority
         effect.color.r = color.rgb[0]
         effect.color.g = color.rgb[1]
         effect.color.b = color.rgb[2]
@@ -186,7 +186,7 @@ class _BlinkLedController(_LedController):
     _MIN_DURATION = 0.4  # min. animation time (with hardcoded 0.2 in __init__)
     _CMD_DURATION = 10.0
 
-    def __init__(self, color, duration):
+    def __init__(self, color, duration, priority):
         super(_BlinkLedController, self).__init__(ReemLedClient._blink_color_client)
 
         # Create request object
@@ -194,7 +194,7 @@ class _BlinkLedController(_LedController):
         effect.leds.ledMask = PDM.LedGroup.LEFT_EAR | PDM.LedGroup.RIGHT_EAR
         effect.firstColorDuration = rospy.Duration.from_sec(0.2)
         effect.secondColorDuration = rospy.Duration.from_sec(0.2)
-        effect.priority = 96
+        effect.priority = priority
         effect.firstColor.r = color.rgb[0]
         effect.firstColor.g = color.rgb[1]
         effect.firstColor.b = color.rgb[2]
