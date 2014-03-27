@@ -91,7 +91,9 @@ class ReemLedClient(object):
                 persistent=True
             )
 
-    def fire(self, duration=1.0):
+    def fire(self, duration=None):
+        if duration is None:
+            duration = 604800
         color = copy.deepcopy(self._color)
         if color == self._last_color:
             self._last_effect.update_duration(duration)
@@ -101,6 +103,12 @@ class ReemLedClient(object):
             self._last_color = color
             if old_effect:
                 old_effect.cancel()
+
+    def cancel(self):
+        if self._last_color:
+            self._last_effect.cancel()
+            self._last_color = None
+            self._last_effect = None
 
     def _start_effect(self, color, duration):
         if self._color.blinking:
