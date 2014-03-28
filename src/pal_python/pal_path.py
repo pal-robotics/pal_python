@@ -123,7 +123,5 @@ def chmod(path, mode):
     """
     os.chmod(path, mode)
     for root, dirs, files in os.walk(path):
-        for d in dirs:
-            os.chmod(os.path.join(root, d), mode)
-        for f in files:
-            os.chmod(os.path.join(root, f), mode)
+        for p in dirs + files:
+            os.chmod(os.path.join(root, p), mode)
