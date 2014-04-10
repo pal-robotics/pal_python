@@ -272,7 +272,7 @@ def tts_speak(text, wait_before_speaking=0):
     Lets the robot say the given text out aloud. This is a blocking call.
     """
 
-    from text_to_speech.msg import SoundAction, SoundGoal
+    from pal_interaction_msgs.msg import SoundAction, SoundGoal
 
     global __tts_client
     if __tts_client is None:
