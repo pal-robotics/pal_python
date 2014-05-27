@@ -60,11 +60,11 @@ def get_robot():
         return host
 
 def get_maps_pkg(robot):
-    pkg = {'rh2': 'reemh2_maps', 'reemc': 'reemc_maps'}.get(robot, 'reem_maps')
+    pkg = {'ant': 'ant_maps', 'rh2': 'reemh2_maps', 'reemc': 'reemc_maps'}.get(robot, 'reem_maps')
     return pkg
 
 def get_nav_pkg(robot):
-    pkg = {'reemc': 'reemc_2dnav'}.get(robot, 'reem_2dnav')
+    pkg = {'ant': 'ant_2dnav', 'reemc': 'reemc_2dnav'}.get(robot, 'reem_2dnav')
     return pkg
 
 def get_performance_mode():
