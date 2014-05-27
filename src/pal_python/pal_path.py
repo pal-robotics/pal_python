@@ -115,3 +115,13 @@ def get_maps_path(name=''):
         __maps_path = rospkg.RosPack().get_path(pkg)
 
     return os.path.join(__maps_path, name)
+
+def chmod(path, mode):
+    """
+    Change the permissions of `path' recursively, including
+    `path' itself.
+    """
+    os.chmod(path, mode)
+    for root, dirs, files in os.walk(path):
+        for p in dirs + files:
+            os.chmod(os.path.join(root, p), mode)
