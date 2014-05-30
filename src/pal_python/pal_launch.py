@@ -118,9 +118,9 @@ def rosrun(stack, fname, *params):
     if process is None:
         raise LaunchError(stack, fname, '[execution failed]')
 
-def start(component):
+def start(component, *params):
     launchfile = '%sStart.sh' % component
-    result = execute_command(pal_path.get_launch_path(launchfile))
+    result = execute_command(pal_path.get_launch_path(launchfile), *params)
     if result != 0:
         raise LaunchError(component, launchfile, result)
 
