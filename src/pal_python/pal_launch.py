@@ -99,11 +99,11 @@ class LaunchErrorCollection(OSError):
     def message(self):
         return ' | '.join(e.message for e in self.errors)
 
-    def __nonzero__(self):
+    def empty(self):
         """
-        False if this error collection is empty (ie. no errors).
+        True if this error collection is empty (ie. no errors).
         """
-        return not bool(self.errors)
+        return len(self.errors) == 0
 
 def roslaunch(stack, fname, *params):
     roslaunch_bin = pal_path.get_ros_bin_path('roslaunch')
@@ -144,7 +144,7 @@ def start_all(*components):
             start(component)
         except LaunchError, e:
             errors.add_error(e)
-    if errors:
+    if not errors.empty():
         raise errors
 
 def stop_all(*components):
@@ -154,5 +154,5 @@ def stop_all(*components):
             stop(component)
         except LaunchError, e:
             errors.add_error(e)
-    if errors:
+    if not errors.empty():
         raise errors
