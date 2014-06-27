@@ -120,15 +120,15 @@ def rosrun(stack, fname, *params):
 
 def start(component, *params):
     launchfile = '%sStart.sh' % component
-    result = execute_command(pal_path.get_launch_path(launchfile), *params)
-    if result != 0:
-        raise LaunchError(component, launchfile, result)
+    process = spawn_command(pal_path.get_launch_path(launchfile), *params)
+    if process is None:
+        raise LaunchError(component, launchfile, '[execution failed]')
 
 def stop(component):
     launchfile = '%sStop.sh' % component
-    result = execute_command(pal_path.get_launch_path(launchfile))
-    if result != 0:
-        raise LaunchError(component, launchfile, result)
+    process = spawn_command(pal_path.get_launch_path(launchfile))
+    if process is None:
+        raise LaunchError(component, launchfile, '[execution failed]')
 
 def run(launchfile, *args):
     result = execute_command(pal_path.get_launch_path(launchfile), *args)
