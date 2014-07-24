@@ -50,10 +50,9 @@ class DiagnosticPublisher:
                 self.update_diag(data)
     """
 
-    OK = 0
-    WARN = 1
-    ERROR = 2
-    STALE = 3
+    OK = DM.DiagnosticStatus.OK
+    WARN = DM.DiagnosticStatus.WARN
+    ERROR = DM.DiagnosticStatus.ERROR
 
     def __init__(self, name, period=rospy.Duration(1.0)):
         """ By default, publishes diagnostic every second """
