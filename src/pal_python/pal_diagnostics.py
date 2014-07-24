@@ -76,6 +76,6 @@ class DiagnosticPublisher:
         with self.lock:
             self.entry.values = []
             for k, v in self.fields.iteritems():
-                self.entry.values.append(DM.KeyValue(k, v))
+                self.entry.values.append(DM.KeyValue(str(k), str(v)))
             msg.status.append(self.entry)
             self.pub.publish(msg)
