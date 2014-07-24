@@ -61,7 +61,7 @@ class DiagnosticPublisher:
         self.entry = DM.DiagnosticStatus()
         self.entry.name = name
         self.lock = threading.Lock()
-        self._tmr = rospy.Timer(period, self.publish)
+        self._tmr = rospy.Timer(period, self._publish)
         self.fields = {}
 
     def message(self, msg):
@@ -70,7 +70,7 @@ class DiagnosticPublisher:
     def level(self, lvl):
         self.entry.level = lvl
 
-    def publish(self):
+    def _publish(self):
         msg = DM.DiagnosticArray()
         msg.header.stamp = rospy.get_rostime()
         with self.lock:
