@@ -70,7 +70,7 @@ class DiagnosticPublisher:
     def level(self, lvl):
         self.entry.level = lvl
 
-    def _publish(self):
+    def _publish(self, evt):
         msg = DM.DiagnosticArray()
         msg.header.stamp = rospy.get_rostime()
         with self.lock:
