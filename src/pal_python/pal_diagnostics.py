@@ -36,16 +36,18 @@ class DiagnosticPublisher:
             def __init__(self):
                 self.diag = Diag("blarg: Blarg test")
 
-            def update_diag():
+            def update_diag(self, data):
                 with self.diag.lock:
-                    self.diag.fields['Test failure rate'] = '0.000%'
-                    self.diag.fields['Current state'] = 'LOST'
-                    self.diag.message("Houston, we might be lost, a bit.")
-                    self.diag.level(Diag.WARN)
+                    fail_rate = '{0:.4f}%'.format(data.fail_rate)
+                    self.diag.fields['Test failure rate'] = fail_rate
+                    if data.lost:
+                        self.diag.fields['Current state'] = 'LOST'
+                        self.diag.message("Houston, we might be lost, a bit.")
+                        self.diag.level(Diag.WARN)
 
             def loop(self):
                 data = do_stuff()
-                self.update_diag()
+                self.update_diag(data)
     """
 
     OK = 0
