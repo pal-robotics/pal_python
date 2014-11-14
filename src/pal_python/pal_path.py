@@ -23,8 +23,6 @@
 
 import os
 
-import rospkg
-
 from pal_python import pal_environ
 
 def assert_relative_path(name):
@@ -103,15 +101,16 @@ def get_config_path(name=''):
 
 global __maps_path
 __maps_path = None
-def get_maps_path(name=''):
+def get_maps_path(name='', robot=None):
     """
     """
     global __maps_path
     assert_relative_path(name)
 
     if not __maps_path:
-        robot = pal_environ.get_robot()
+        if robot is None:
+            robot = pal_environ.get_robot()
         pkg = pal_environ.get_maps_pkg(robot)
-        __maps_path = rospkg.RosPack().get_path(pkg)
+        __maps_path = os.path.join(os.getenv('HOME'), '.pal', pkg)
 
     return os.path.join(__maps_path, name)
