@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.2 (2014-11-14)
+------------------
 * Allows to pass robot name to get maps path
 * Sets maps path to $HOME/.pal/<robot>_maps
 * Contributors: Enrique Fernandez
