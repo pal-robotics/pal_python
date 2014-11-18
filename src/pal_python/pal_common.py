@@ -83,6 +83,7 @@ def is_simulation():
 def is_node_running(node):
     """
     Return true if the given node is running.
+    Note that a socket is created to query the master.
     """
     master = scriptutil.get_master()
     node_info = master.lookupNode(rospy.get_name(), node)
