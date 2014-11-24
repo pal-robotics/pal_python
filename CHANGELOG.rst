@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.3 (2014-11-24)
+------------------
 * Add note on socket consumption of is_node_running
 * Contributors: Enrique Fernandez
 
