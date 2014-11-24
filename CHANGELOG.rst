@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add note on socket consumption of is_node_running
+* Contributors: Enrique Fernandez
+
 0.9.2 (2014-11-14)
 ------------------
 * Allows to pass robot name to get maps path
