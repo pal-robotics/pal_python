@@ -20,8 +20,11 @@
 #
 # Authors:
 #   * Siegfried-A. Gevatter
+#   * Enrique Fernandez
 
 import os
+
+import rospkg
 
 from pal_python import pal_environ
 
@@ -34,14 +37,15 @@ def assert_relative_path(name):
 
 def get_base_path():
     """
-    Return the path to the root directory. This is /mnt_flash on
+    Return the path to the root directory. This is /opt/pal/$PAL_DISTRO on
     the robot and  ~/svn (or the aprorpiate branch) on a desktop.
     """
     if pal_environ.is_desktop():
         return os.path.join(os.path.expanduser('~/'),
                             os.environ.get('PAL_BRANCH'))
     else:
-        return '/mnt_flash'
+        return os.path.join('/opt/pal',
+                            os.environ.get('PAL_DISTRO'))
 
 def get_launch_path(name=''):
     """
@@ -50,10 +54,13 @@ def get_launch_path(name=''):
     """
     assert_relative_path(name)
 
-    base = get_base_path()
     if pal_environ.is_desktop():
-        base = os.path.join(base, 'robot/sources')
-    return os.path.join(base, 'bin/launch', name)
+        base = os.path.join(rospkg.RosPack().get_path('pal_startup'),
+                            'scripts')
+    else:
+        base = os.path.join(get_base_path(),
+                            'bin/pal_startup')
+    return os.path.join(base, 'launch', name)
 
 def get_bin_path(name=''):
     """
