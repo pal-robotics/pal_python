@@ -2,6 +2,12 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add surveillance robot
+* Update launch path (for pal_startup)
+* Contributors: Enrique Fernandez, enriquefernandez
+
 0.9.3 (2014-11-24)
 ------------------
 * Add note on socket consumption of is_node_running
