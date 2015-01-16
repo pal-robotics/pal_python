@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.4 (2015-01-16)
+------------------
 * Add surveillance robot
 * Update launch path (for pal_startup)
 * Contributors: Enrique Fernandez, enriquefernandez
