@@ -51,12 +51,27 @@ def get_launch_path(name=''):
     """
     Return the path to the launch directory or, if `name' is not empty,
     to the given *Start.sh/*Stop.sh file.
+
+    Takes into account that when running on a development machine
+    the package can be found installed from debians or in the
+    current workspace, this last one having preference.
     """
     assert_relative_path(name)
 
     if pal_environ.is_desktop():
         base = os.path.join(rospkg.RosPack().get_path('pal_startup'),
                             'scripts')
+        # We check if there is not a scripts directory, in that case
+        # pal_startup is installed from our debians and we need to
+        # use a slightly different path
+        if not os.path.exists(base):
+            base = rospkg.RosPack().get_path('pal_startup')
+            # The path we get from RosPack is:
+            # /opt/pal/cobalt/share/pal_startup/launch/*.sh
+            # But the actual executable files are here:
+            # /opt/pal/cobalt/bin/pal_startup/launch/*.sh
+            # So we replace that part of the path
+            base = base.replace('/share/', '/bin/')
     else:
         base = os.path.join(get_base_path(),
                             'bin/pal_startup')
