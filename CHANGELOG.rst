@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.5 (2015-04-10)
+------------------
 * Fix the path of start/stop files in desktop machines with pal_startup installed from our debians
 * Contributors: Sammy Pfeiffer, Victor Lopez
 * Changed maintainer to Sammy Pfeiffer
