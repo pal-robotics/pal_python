@@ -2,6 +2,12 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Unhardcode Robot Folders
+  I'm concerned that maybe someone could rely on the default behaviour (which I believe is wrong) of using `reem_maps` in a robot not called `reem`.
+* Contributors: Sam Pfeiffer
+
 0.9.5 (2015-04-10)
 ------------------
 * Fix the path of start/stop files in desktop machines with pal_startup installed from our debians
