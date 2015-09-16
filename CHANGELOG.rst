@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.6 (2015-09-16)
+------------------
 * Unhardcode Robot Folders
   I'm concerned that maybe someone could rely on the default behaviour (which I believe is wrong) of using `reem_maps` in a robot not called `reem`.
 * Contributors: Sam Pfeiffer
