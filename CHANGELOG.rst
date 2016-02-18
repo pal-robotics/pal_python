@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.7 (2016-02-18)
+------------------
 * Add shell_cmd from remote_shell
 * Contributors: Victor Lopez
 
