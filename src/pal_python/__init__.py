@@ -7,3 +7,4 @@ from pal_publishers import *
 from pal_thread import *
 from pal_rpc import *
 from pal_diagnostics import *
+from shell_cmd import *

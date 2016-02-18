@@ -18,4 +18,5 @@
   <run_depend>actionlib_msgs</run_depend>
   <run_depend>pal_interaction_msgs</run_depend>
   <run_depend>pal_device_msgs</run_depend>
+  <run_depend>diagnostic_msgs</run_depend>
 </package>
