@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add shell_cmd from remote_shell
+* Contributors: Victor Lopez
+
 0.9.6 (2015-09-16)
 ------------------
 * Unhardcode Robot Folders
