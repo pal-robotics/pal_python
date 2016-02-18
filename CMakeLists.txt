@@ -12,3 +12,8 @@ catkin_package(
       rosgraph
       actionlib
       actionlib_msgs)
+  
+
+if(CATKIN_ENABLE_TESTING)
+    catkin_add_nosetests(test/test_shell_cmd.py)
+endif()
