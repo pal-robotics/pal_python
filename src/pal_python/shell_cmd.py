@@ -2,15 +2,27 @@
 
 import subprocess
 import tempfile
+import time
 import os
 import signal
 
 class ShellCmd:
 
-    def __init__(self, cmd):
-        self.outf = tempfile.NamedTemporaryFile(mode="w")
-        self.errf = tempfile.NamedTemporaryFile(mode="w")
-        self.inf = tempfile.NamedTemporaryFile(mode="r")
+    def __init__(self, cmd, stdin=None, stdout=None, stderr=None):
+        if stdin:
+            self.inf = stdin
+        else:
+            self.inf = tempfile.NamedTemporaryFile(mode="r")
+
+        if stdout:
+            self.outf = stdout
+        else:
+            self.outf = tempfile.NamedTemporaryFile(mode="w")
+
+        if stderr:
+            self.errf= stderr
+        else:
+            self.errf = tempfile.NamedTemporaryFile(mode="w")
         self.process = subprocess.Popen(cmd, shell=True, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
                                          preexec_fn=os.setsid)
@@ -40,3 +52,15 @@ class ShellCmd:
     def kill(self):
         os.killpg(self.process.pid, signal.SIGTERM)
         self.process.wait()
+
+    def nice_kill(self, retry_time=2, max_retries=2):
+        """
+         Attempts to kill with SIGINT, returns if successful
+        """
+        retries=0
+        while (not self.is_done() and retries < max_retries):
+            if retries > 0:
+                time.sleep(retry_time)
+            os.killpg(self.process.pid, signal.SIGINT)
+            retries+=1
+        return self.is_done()
