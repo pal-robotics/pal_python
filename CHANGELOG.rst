@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.8 (2016-02-29)
+------------------
 * Add configurable stdin, stdout, stderr
 * Contributors: Victor Lopez
 
