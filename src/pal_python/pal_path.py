@@ -59,22 +59,22 @@ def get_launch_path(name=''):
     assert_relative_path(name)
 
     if pal_environ.is_desktop():
-        base = os.path.join(rospkg.RosPack().get_path('pal_startup'),
+        base = os.path.join(rospkg.RosPack().get_path('pal_startup_base'),
                             'scripts')
         # We check if there is not a scripts directory, in that case
-        # pal_startup is installed from our debians and we need to
+        # pal_startup_base is installed from our debians and we need to
         # use a slightly different path
         if not os.path.exists(base):
-            base = rospkg.RosPack().get_path('pal_startup')
+            base = rospkg.RosPack().get_path('pal_startup_base')
             # The path we get from RosPack is:
-            # /opt/pal/cobalt/share/pal_startup/launch/*.sh
+            # /opt/pal/cobalt/share/pal_startup_base/launch/*.sh
             # But the actual executable files are here:
-            # /opt/pal/cobalt/bin/pal_startup/launch/*.sh
+            # /opt/pal/cobalt/bin/pal_startup_base/launch/*.sh
             # So we replace that part of the path
             base = base.replace('/share/', '/bin/')
     else:
         base = os.path.join(get_base_path(),
-                            'bin/pal_startup')
+                            'bin/pal_startup_base')
     return os.path.join(base, 'launch', name)
 
 def get_bin_path(name=''):
