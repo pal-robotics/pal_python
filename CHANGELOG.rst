@@ -2,6 +2,12 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Adapt pal_hci to new led manager interface
+* replace pal_startup with pal_startup_base
+* Contributors: Jeremie Deray, Victor Lopez
+
 0.9.8 (2016-02-29)
 ------------------
 * Add configurable stdin, stdout, stderr
