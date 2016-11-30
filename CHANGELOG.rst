@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.9 (2016-11-30)
+------------------
 * Adapt pal_hci to new led manager interface
 * replace pal_startup with pal_startup_base
 * Contributors: Jeremie Deray, Victor Lopez
