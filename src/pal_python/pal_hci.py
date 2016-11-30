@@ -30,6 +30,7 @@ from actionlib_msgs.msg import GoalStatus
 
 import pal_device_msgs.srv as PDMS
 import pal_device_msgs.msg as PDM
+from std_msgs.msg import ColorRGBA
 
 from .pal_common import configurable
 from .pal_rpc import AsyncServiceClient
@@ -65,196 +66,39 @@ class ReemLedClient(object):
         led_cl.fire(1.0)  # will set the color of the ears to blue for 1 sec
 
     """
-    _flat_color_client = None
-    _blink_color_client = None
-    _cancel_effect_client = None
+    _led_manager_client = None
 
     def __init__(self, color, priority=96):
         self._color = color
         self._priority = priority
         self._last_color = None
         self._last_effect = None
-        if ReemLedClient._flat_color_client is None:
-            ReemLedClient._flat_color_client = AsyncServiceClient(
-                'ledManager/TimedColourEffect',
-                PDMS.TimedColourEffect,
-                persistent=True
-            )
-            ReemLedClient._blink_color_client = AsyncServiceClient(
-                'ledManager/TimedBlinkEffect',
-                PDMS.TimedBlinkEffect,
-                persistent=True
-            )
-            ReemLedClient._cancel_effect_client = AsyncServiceClient(
-                'ledManager/CancelEffect',
-                PDMS.CancelEffect,
-                persistent=True
-            )
+        if ReemLedClient._led_manager_client is None:
+            print("foo")
+            ReemLedClient._led_manager_client = actionlib.SimpleActionClient("/pal_led_manager/do_effect",
+                                                                            PDM.DoTimedLedEffectAction)
+        self.goal = PDM.DoTimedLedEffectGoal()
+        self.goal.priority = self._priority
+        self.goal.devices = [0]
+        color = ColorRGBA(r=color.rgb[0], g=color.rgb[1], b=color.rgb[2], a=1.0)
+        if self._color.blinking:
+            self.goal.params.effectType = PDM.LedEffectParams.BLINK
+            self.goal.params.blink.first_color = color
+            self.goal.params.blink.second_color = ColorRGBA(r=0.0, g=0.0, b=0.0, a=0.0)
+            self.goal.params.blink.first_color_duration = rospy.Duration(0.2)
+            self.goal.params.blink.second_color_duration = rospy.Duration(0.2)
+        else:
+            self.goal.params.effectType = PDM.LedEffectParams.FIXED_COLOR
+            self.goal.params.fixed_color.color = color
 
     def fire(self, duration=None):
         if duration is None:
-            duration = 604800
-        color = copy.deepcopy(self._color)
-        if color == self._last_color:
-            self._last_effect.update_duration(duration)
-        else:
-            old_effect = self._last_effect
-            self._last_effect = self._start_effect(color, duration)
-            self._last_color = color
-            if old_effect:
-                old_effect.cancel()
+            duration = 0
+        self.goal.effectDuration = rospy.Duration(duration)
+        ReemLedClient._led_manager_client.send_goal(self.goal)
 
     def cancel(self):
-        if self._last_color:
-            self._last_effect.cancel()
-            self._last_color = None
-            self._last_effect = None
-
-    def _start_effect(self, color, duration):
-        if self._color.blinking:
-            return _BlinkLedController(color, duration, self._priority)
-        else:
-            return _ColorLedController(color, duration, self._priority)
-
-class _LedController(object):
-
-    __client = None  # instance of AsyncServiceClient
-    __last_id = 0
-    __active_effect_id = None
-    __effects_map = {}
-
-    def __init__(self, client):
-        self.__client = client
-
-    def cancel(self):
-        if self.__active_effect_id is not None:
-            self.__cancel_request(self.__active_effect_id)
-            self.__active_effect_id = None
-        else:
-            # We may still be awaiting the response for the last request. In
-            # that case, we invalidate it.
-            self.__last_id += 1
-
-    def _send_request(self, *args):
-        previous_request_id = self.__active_effect_id
-        self.__active_effect_id = None
-
-        self.__last_id += 1
-        self.__client.call(*args, cb=lambda x: self.__request_cb(self.__last_id, x))
-
-        if previous_request_id is not None:
-            # Remember that LedManager keeps around all requests until they expire
-            # or are cancelled.
-            self.__cancel_request(previous_request_id)
-
-    def __request_cb(self, cid, response):
-        if cid == self.__last_id:
-            self.__active_effect_id = response.effectId
-        else:
-            # We are getting the response for a request that's already outdated
-            self.__cancel_request(response.requestId)
-
-    def __cancel_request(self, request_id):
-        cancel_request = PDMS.CancelEffectRequest()
-        cancel_request.effectId = request_id
-        ReemLedClient._cancel_effect_client.call(cancel_request)
-
-class _ColorLedController(_LedController):
-
-    _request = None
-
-    def __init__(self, color, duration, priority):
-        super(_ColorLedController, self).__init__(ReemLedClient._flat_color_client)
-
-        # Create request object
-        effect = PDMS.TimedColourEffectRequest()
-        effect.leds.ledMask = PDM.LedGroup.LEFT_EAR | PDM.LedGroup.RIGHT_EAR
-        effect.priority = priority
-        effect.color.r = color.rgb[0]
-        effect.color.g = color.rgb[1]
-        effect.color.b = color.rgb[2]
-        self._request = effect
-
-        # Send first LED command
-        self.update_duration(duration)
-
-    def update_duration(self, duration):
-        # We replace any previous command with the new one.
-        self._request.effectDuration = rospy.Time(duration)
-        self._send_request(self._request)
-
-class _BlinkLedController(_LedController):
-
-    _request = None
-
-    _desired_timeout = None
-    _current_timeout = None
-    _timer = None
-
-    _MIN_DURATION = 0.4  # min. animation time (with hardcoded 0.2 in __init__)
-    _CMD_DURATION = 10.0
-
-    def __init__(self, color, duration, priority):
-        super(_BlinkLedController, self).__init__(ReemLedClient._blink_color_client)
-
-        # Create request object
-        effect = PDMS.TimedBlinkEffectRequest()
-        effect.leds.ledMask = PDM.LedGroup.LEFT_EAR | PDM.LedGroup.RIGHT_EAR
-        effect.firstColorDuration = rospy.Duration.from_sec(0.2)
-        effect.secondColorDuration = rospy.Duration.from_sec(0.2)
-        effect.priority = priority
-        effect.firstColor.r = color.rgb[0]
-        effect.firstColor.g = color.rgb[1]
-        effect.firstColor.b = color.rgb[2]
-        # second color will be black by default
-        self._request = effect
-
-        # Send first LED command
-        duration = max(duration, self._MIN_DURATION)
-        self._desired_timeout = time.time() + duration
-        self._send_command()
-
-        # Start timer
-        self._reset_timer()
-
-    def __del__(self):
-        if self._timer:
-            self._timer.shutdown()
-
-    def cancel(self):
-        if self._timer:
-            self._timer.shutdown()
-        super(_BlinkLedController, self).cancel()
-
-    def update_duration(self, duration):
-        duration = max(duration, self._MIN_DURATION)
-        self._desired_timeout = time.time() + duration
-        if not self._timer:
-            self._reset_timer()
-
-    def _send_command(self):
-        self._current_timeout = time.time() + self._CMD_DURATION
-        self._request.effectDuration = rospy.Duration.from_sec(self._CMD_DURATION)
-        self._send_request(self._request)
-
-    def _reset_timer(self):
-        if self._timer:
-            self._timer.shutdown()
-        self._timer = rospy.Timer(rospy.Duration.from_sec(self._MIN_DURATION),
-                                  self._timeout, oneshot=False)
-
-    def _timeout(self, event):
-        """
-        This method is called periodically every _MIN_DURATION seconds.
-        """
-        remaining_duration = self._desired_timeout - time.time()
-        if remaining_duration <= 0:
-            self.cancel()
-            self._timer.shutdown()
-            self._timer = None
-        elif remaining_duration > (self._MIN_DURATION - 0.1):
-            if self._current_timeout < self._desired_timeout - 0.1:
-                self._send_command()
+        self.client.cancel_goal()
 
 TTS_ACTION_NAME = '/sound'
 
