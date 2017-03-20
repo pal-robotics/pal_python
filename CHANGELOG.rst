@@ -2,6 +2,12 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Check if cmd is finished after sleeping
+  Happens usually with rosbags
+* Contributors: Victor Lopez
+
 0.9.9 (2016-11-30)
 ------------------
 * Adapt pal_hci to new led manager interface
