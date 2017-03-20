@@ -61,6 +61,8 @@ class ShellCmd:
         while (not self.is_done() and retries < max_retries):
             if retries > 0:
                 time.sleep(retry_time)
+                if self.is_done():
+                    break #In case command finished during sleep (ie rosbag)
             os.killpg(self.process.pid, signal.SIGINT)
             retries+=1
         return self.is_done()
