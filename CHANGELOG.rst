@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.10 (2017-03-20)
+-------------------
 * Check if cmd is finished after sleeping
   Happens usually with rosbags
 * Contributors: Victor Lopez
