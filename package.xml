@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>pal_python</name>
-  <version>0.9.10</version>
+  <version>0.9.11</version>
   <description>PAL python utils.</description>
 
   <maintainer email="sam.pfeiffer@pal-robotics.com">Sammy Pfeiffer</maintainer>

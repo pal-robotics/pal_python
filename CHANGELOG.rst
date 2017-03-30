@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.11 (2017-03-30)
+-------------------
 * Reem Led client will use all leds
 * Contributors: Victor Lopez
 
