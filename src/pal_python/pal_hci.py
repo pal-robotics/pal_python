@@ -74,12 +74,11 @@ class ReemLedClient(object):
         self._last_color = None
         self._last_effect = None
         if ReemLedClient._led_manager_client is None:
-            print("foo")
             ReemLedClient._led_manager_client = actionlib.SimpleActionClient("/pal_led_manager/do_effect",
                                                                             PDM.DoTimedLedEffectAction)
         self.goal = PDM.DoTimedLedEffectGoal()
         self.goal.priority = self._priority
-        self.goal.devices = [0]
+        self.goal.devices = []
         color = ColorRGBA(r=color.rgb[0], g=color.rgb[1], b=color.rgb[2], a=1.0)
         if self._color.blinking:
             self.goal.params.effectType = PDM.LedEffectParams.BLINK
