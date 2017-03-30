@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Reem Led client will use all leds
+* Contributors: Victor Lopez
+
 0.9.10 (2017-03-20)
 -------------------
 * Check if cmd is finished after sleeping
