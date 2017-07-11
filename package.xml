@@ -4,7 +4,7 @@
   <version>0.9.12</version>
   <description>PAL python utils.</description>
 
-  <maintainer email="sam.pfeiffer@pal-robotics.com">Sammy Pfeiffer</maintainer>
+  <maintainer email="victor.lopez@pal-robotics.com">Victor Lopez Boya</maintainer>
   <author email="siegfried.gevatter@pal-robotics.com">Siegfried-A. Gevatter Pujals</author>
 
   <license>BSD</license>
@@ -19,6 +19,5 @@
   <run_depend>pal_interaction_msgs</run_depend>
   <run_depend>pal_device_msgs</run_depend>
   <run_depend>diagnostic_msgs</run_depend>
-  <run_depend>cv2</run_depend>
   <run_depend>cv_bridge</run_depend>
 </package>
