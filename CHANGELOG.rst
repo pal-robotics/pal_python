@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.13 (2017-07-11)
+-------------------
 * Fix deps and maintainer
 * Contributors: Victor Lopez
 
