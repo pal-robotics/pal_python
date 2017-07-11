@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add ros_image_utils
+* Contributors: Victor Lopez
+
 0.9.11 (2017-03-30)
 -------------------
 * Reem Led client will use all leds
