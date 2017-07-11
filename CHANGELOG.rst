@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.12 (2017-07-11)
+-------------------
 * Add ros_image_utils
 * Contributors: Victor Lopez
 
