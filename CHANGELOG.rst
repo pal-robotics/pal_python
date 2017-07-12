@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.14 (2017-07-12)
+-------------------
 * Add pal test utils
 * Contributors: Victor Lopez
 
