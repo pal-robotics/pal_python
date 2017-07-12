@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add pal test utils
+* Contributors: Victor Lopez
+
 0.9.13 (2017-07-11)
 -------------------
 * Fix deps and maintainer
