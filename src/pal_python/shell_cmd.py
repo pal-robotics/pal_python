@@ -8,7 +8,7 @@ import signal
 
 class ShellCmd:
 
-    def __init__(self, cmd, stdin=None, stdout=None, stderr=None):
+    def __init__(self, cmd, stdin=None, stdout=None, stderr=None, shell=True):
         if stdin:
             self.inf = stdin
         else:
@@ -23,9 +23,11 @@ class ShellCmd:
             self.errf= stderr
         else:
             self.errf = tempfile.NamedTemporaryFile(mode="w")
-        self.process = subprocess.Popen(cmd, shell=True, stdin=self.inf,
+        self.process = subprocess.Popen(cmd, shell=shell, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
                                          preexec_fn=os.setsid)
+        self.old_stdout_len = 1
+        self.old_stderr_len = 1
 
     def __del__(self):
         if not self.is_done():
@@ -41,6 +43,46 @@ class ShellCmd:
     def get_stderr(self):
         with open(self.errf.name, "r") as f:
             return f.read()
+
+    def get_updated_stdout(self):
+        read_output = self.get_stdout().split('\n')
+        output, self.old_stdout_len = self.compute_diff_content(read_output, self.old_stdout_len)
+        return output
+
+    def get_updated_stderr(self):
+        read_output = self.get_stderr().split('\n')
+        output, self.old_stderr_len = self.compute_diff_content(read_output, self.old_stderr_len)
+        return output
+
+    def compute_diff_content(self, updated_content, old_content_length):
+        content = len(updated_content) - old_content_length
+        if content > 0:
+            output = "\n".join(updated_content[old_content_length-1:])
+            return output, len(updated_content)
+        else:
+            return None, len(updated_content)
+
+    def stream_stdout(self):
+        old_content_length = 1
+        while not self.is_done():
+            read_output = self.get_stdout().split('\n')
+            diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+            yield diff_content
+        # Helps to captute the remaining content after the process is completed
+        read_output = self.get_stdout().split('\n')
+        diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+        yield diff_content
+
+    def stream_stderr(self):
+        old_content_length = 1
+        while not self.is_done():
+            read_output = self.get_stderr().split('\n')
+            diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+            yield diff_content
+        # Helps to captute the remaining content after the process is completed
+        read_output = self.get_stdout().split('\n')
+        diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+        yield diff_content
 
     def get_retcode(self):
         """get retcode or None if still running"""
