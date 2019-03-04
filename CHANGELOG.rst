@@ -2,6 +2,14 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'subprocess_streaming' into 'dubnium-devel'
+  added subprocess output streaming methods
+  See merge request common/pal_python!7
+* added subprocess output streaming methods
+* Contributors: Sai Kishor Kothakota, Victor Lopez
+
 0.9.14 (2017-07-12)
 -------------------
 * Add pal test utils
