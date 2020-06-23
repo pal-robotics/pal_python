@@ -20,12 +20,12 @@ class ShellCmd:
             self.outf = tempfile.NamedTemporaryFile(mode="w")
 
         if stderr:
-            self.errf= stderr
+            self.errf = stderr
         else:
             self.errf = tempfile.NamedTemporaryFile(mode="w")
         self.process = subprocess.Popen(cmd, shell=shell, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
-                                         preexec_fn=os.setsid)
+                                        preexec_fn=os.setsid)
         self.old_stdout_len = 1
         self.old_stderr_len = 1
 
@@ -46,18 +46,20 @@ class ShellCmd:
 
     def get_updated_stdout(self):
         read_output = self.get_stdout().split('\n')
-        output, self.old_stdout_len = self.compute_diff_content(read_output, self.old_stdout_len)
+        output, self.old_stdout_len = self.compute_diff_content(
+            read_output, self.old_stdout_len)
         return output
 
     def get_updated_stderr(self):
         read_output = self.get_stderr().split('\n')
-        output, self.old_stderr_len = self.compute_diff_content(read_output, self.old_stderr_len)
+        output, self.old_stderr_len = self.compute_diff_content(
+            read_output, self.old_stderr_len)
         return output
 
     def compute_diff_content(self, updated_content, old_content_length):
         content = len(updated_content) - old_content_length
         if content > 0:
-            output = "\n".join(updated_content[old_content_length-1:])
+            output = "\n".join(updated_content[old_content_length - 1:])
             return output, len(updated_content)
         else:
             return None, len(updated_content)
@@ -66,22 +68,26 @@ class ShellCmd:
         old_content_length = 1
         while not self.is_done():
             read_output = self.get_stdout().split('\n')
-            diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+            diff_content, old_content_length = self.compute_diff_content(
+                read_output, old_content_length)
             yield diff_content
         # Helps to captute the remaining content after the process is completed
         read_output = self.get_stdout().split('\n')
-        diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+        diff_content, old_content_length = self.compute_diff_content(
+            read_output, old_content_length)
         yield diff_content
 
     def stream_stderr(self):
         old_content_length = 1
         while not self.is_done():
             read_output = self.get_stderr().split('\n')
-            diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+            diff_content, old_content_length = self.compute_diff_content(
+                read_output, old_content_length)
             yield diff_content
         # Helps to captute the remaining content after the process is completed
         read_output = self.get_stdout().split('\n')
-        diff_content, old_content_length = self.compute_diff_content(read_output, old_content_length)
+        diff_content, old_content_length = self.compute_diff_content(
+            read_output, old_content_length)
         yield diff_content
 
     def get_retcode(self):
@@ -89,7 +95,7 @@ class ShellCmd:
         return self.process.poll()
 
     def is_done(self):
-        return self.process.poll() != None
+        return self.process.poll() is not None
 
     def kill(self):
         os.killpg(self.process.pid, signal.SIGTERM)
@@ -99,12 +105,12 @@ class ShellCmd:
         """
          Attempts to kill with SIGINT, returns if successful
         """
-        retries=0
+        retries = 0
         while (not self.is_done() and retries < max_retries):
             if retries > 0:
                 time.sleep(retry_time)
                 if self.is_done():
-                    break #In case command finished during sleep (ie rosbag)
+                    break  # In case command finished during sleep (ie rosbag)
             os.killpg(self.process.pid, signal.SIGINT)
-            retries+=1
+            retries += 1
         return self.is_done()
