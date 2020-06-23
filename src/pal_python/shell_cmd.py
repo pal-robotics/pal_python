@@ -97,6 +97,17 @@ class ShellCmd:
     def is_done(self):
         return self.process.poll() is not None
 
+    def wait(self, timeout=float("inf")):
+        """wait for the process to end"""
+        start_time = time.clock()
+        elapsed = 0.0
+        while elapsed < timeout:
+            if self.is_done():
+                return True
+            time.sleep(0.1)
+            elapsed = time.clock() - start_time
+        return False
+
     def kill(self):
         os.killpg(self.process.pid, signal.SIGTERM)
         self.process.wait()
