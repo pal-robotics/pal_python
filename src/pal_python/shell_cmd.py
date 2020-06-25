@@ -9,20 +9,25 @@ import signal
 class ShellCmd:
 
     def __init__(self, cmd, stdin=None, stdout=None, stderr=None, shell=True):
-        if stdin:
-            self.inf = stdin
+        self.cmd_stdin = stdin
+        self.cmd_stdout = stdout
+        self.cmd_stderr = stderr
+
+        if self.cmd_stdin:
+            self.inf = self.cmd_stdin
         else:
             self.inf = tempfile.NamedTemporaryFile(mode="r")
 
-        if stdout:
-            self.outf = stdout
+        if self.cmd_stdout:
+            self.outf = self.cmd_stdout
         else:
             self.outf = tempfile.NamedTemporaryFile(mode="w")
 
-        if stderr:
-            self.errf = stderr
+        if self.cmd_stderr:
+            self.errf = self.cmd_stderr
         else:
             self.errf = tempfile.NamedTemporaryFile(mode="w")
+
         self.process = subprocess.Popen(cmd, shell=shell, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
                                         preexec_fn=os.setsid)
@@ -32,9 +37,14 @@ class ShellCmd:
     def __del__(self):
         if not self.is_done():
             self.kill()
-        self.outf.close()
-        self.errf.close()
-        self.inf.close()
+
+        # close only the fds created by ourselves
+        if self.cmd_stdin is None:
+            self.outf.close()
+        if self.cmd_stdout is None:
+            self.errf.close()
+        if self.cmd_stderr is None:
+            self.inf.close()
 
     def get_stdout(self):
         with open(self.outf.name, "r") as f:
