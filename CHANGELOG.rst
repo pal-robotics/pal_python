@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.16 (2020-06-25)
+-------------------
 * Merge branch 'shell_wait' into 'dubnium-devel'
   Shell wait
   See merge request common/pal_python!8
