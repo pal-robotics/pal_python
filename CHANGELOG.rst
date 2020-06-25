@@ -2,6 +2,16 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'shell_wait' into 'dubnium-devel'
+  Shell wait
+  See merge request common/pal_python!8
+* Close fd opened by ourselves only
+* Added wait function
+* pep8
+* Contributors: Jordan Palacios, jordanpalacios
+
 0.9.15 (2019-03-04)
 -------------------
 * Merge branch 'subprocess_streaming' into 'dubnium-devel'
