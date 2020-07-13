@@ -40,11 +40,11 @@ class ShellCmd:
 
         # close only the fds created by ourselves
         if self.cmd_stdin is None:
-            self.outf.close()
-        if self.cmd_stdout is None:
-            self.errf.close()
-        if self.cmd_stderr is None:
             self.inf.close()
+        if self.cmd_stdout is None:
+            self.outf.close()
+        if self.cmd_stderr is None:
+            self.errf.close()
 
     def get_stdout(self):
         with open(self.outf.name, "r") as f:
