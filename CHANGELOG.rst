@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fixed which fd are closed
+* Contributors: Jordan Palacios
+
 0.9.16 (2020-06-25)
 -------------------
 * Merge branch 'shell_wait' into 'dubnium-devel'
