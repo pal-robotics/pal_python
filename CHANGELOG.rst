@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.17 (2020-07-13)
+-------------------
 * Fixed which fd are closed
 * Contributors: Jordan Palacios
 
