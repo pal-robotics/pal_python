@@ -2,6 +2,12 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix param check for simulation
+  Somehow it is not working, at least in ferrum
+* Contributors: Victor Lopez
+
 0.9.17 (2020-07-13)
 -------------------
 * Fixed which fd are closed
