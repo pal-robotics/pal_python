@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.18 (2021-02-01)
+-------------------
 * Fix param check for simulation
   Somehow it is not working, at least in ferrum
 * Contributors: Victor Lopez
