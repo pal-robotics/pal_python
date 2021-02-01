@@ -75,7 +75,7 @@ def is_simulation():
     Return true if the node is running in simulation.
     """
     try:
-        return rospy.get_param('use_sim_time')
+        return rospy.get_param('/use_sim_time')
     except (rosgraph.masterapi.MasterError, KeyError):
         return False
 
