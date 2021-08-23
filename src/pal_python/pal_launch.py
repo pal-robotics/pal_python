@@ -142,7 +142,7 @@ def start_all(*components):
     for component in components:
         try:
             start(component)
-        except LaunchError, e:
+        except LaunchError as e:
             errors.add_error(e)
     if not errors.empty():
         raise errors
@@ -152,7 +152,7 @@ def stop_all(*components):
     for component in components:
         try:
             stop(component)
-        except LaunchError, e:
+        except LaunchError as e:
             errors.add_error(e)
     if not errors.empty():
         raise errors

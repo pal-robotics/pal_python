@@ -21,6 +21,8 @@
 # Authors:
 #   * Siegfried-A. Gevatter
 
+from builtins import object
+
 from contextlib import contextmanager
 import threading
 
@@ -46,7 +48,7 @@ class SharedData(object):
         # We store values in a dictionary so the attributes can be
         # enumerated.
         self._data = {}
-        for key, value in kwargs.iteritems():
+        for key, value in list(kwargs.items()):
             self._data[key] = value
 
     def _is_lock_owner(self):
@@ -106,6 +108,6 @@ class SharedMessage(SharedData):
     def get_message(self):
         with self.lock():
             message = self._message_type()
-            for key, value in self._data.iteritems():
+            for key, value in list(self._data.items()):
                 setattr(message, key, value)
         return message

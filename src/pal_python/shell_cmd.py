@@ -6,7 +6,9 @@ import time
 import os
 import signal
 
-class ShellCmd:
+from builtins import object
+
+class ShellCmd(object):
 
     def __init__(self, cmd, stdin=None, stdout=None, stderr=None, shell=True):
         self.cmd_stdin = stdin

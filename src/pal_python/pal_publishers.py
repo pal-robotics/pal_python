@@ -21,8 +21,14 @@
 # Authors:
 #   * Siegfried-A. Gevatter
 
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from past.utils import old_div
+
 import sys
-import thread
+import _thread
 
 import rospy
 
@@ -43,7 +49,7 @@ class _RatePublisher(object):
 
     def pub(self, message, rate=None):
         self._message = message
-        self._period = (1. / rate) if rate else None
+        self._period = (old_div(1., rate)) if rate else None
         self.publish_once()
 
     def stop(self):
@@ -123,8 +129,8 @@ class RatePublishers(object):
         # TODO: Create a class that spawns a global thread and provides
         #       createTimer and createWallTimer, just like NodeHandle
         #       does in rospy?
-        next_timeout = sys.maxint
-        for topic in self._publishers.itervalues():
+        next_timeout = sys.maxsize
+        for topic in list(self._publishers.values()):
             next_timeout = min(topic.spin_once(), next_timeout)
         return next_timeout
 
@@ -146,12 +152,12 @@ class TimeoutManager(object):
                 for m in self._members:
                     m.spin_once()
                     rospy.sleep(0.01)  # FIXME
-            except Exception, e:
+            except Exception as e:
                 rospy.logfatal(e)
 
     def spin_thread(self):
         rospy.loginfo("Spawning thread for TopicTestManager...")
-        thread.start_new_thread(self.spin, ())
+        _thread.start_new_thread(self.spin, ())
 
     def shutdown(self):
         self._shutdown = True

@@ -22,6 +22,8 @@
 #   * Siegfried-A. Gevatter
 #   * Paul Mathieu
 
+from builtins import object
+
 import rospy
 import actionlib
 import copy

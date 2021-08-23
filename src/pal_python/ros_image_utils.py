@@ -1,8 +1,9 @@
+from builtins import object
 from cv_bridge.core import CvBridge
 import cv2
 import tempfile
 
-class RosImageTmpFile:
+class RosImageTmpFile(object):
     def __init__(self, image_msg, desired_encoding="bgr8"):
         self.image_msg = image_msg
         self.desired_encoding = desired_encoding

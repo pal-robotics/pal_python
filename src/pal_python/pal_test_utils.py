@@ -1,7 +1,8 @@
+from builtins import object
 import actionlib
 import rospy
 
-class MockActionServer:
+class MockActionServer(object):
     def __init__(self, server_name, action_type):
         self.server_ = actionlib.SimpleActionServer(server_name,
                                                     action_type,
