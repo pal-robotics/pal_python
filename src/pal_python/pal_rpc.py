@@ -21,12 +21,14 @@
 # Authors:
 #   * Paul Mathieu
 
+from builtins import object
+
 import threading
 import rospy
 import actionlib
 
 
-class EasyActionServer:
+class EasyActionServer(object):
     """
     Supposedly easier to use than the SimpleActionServer.
     This action server will replace ROS services. It provides a
@@ -107,7 +109,7 @@ class EasyActionServer:
         self._ghdl = None
 
 
-class AsyncServiceClient:
+class AsyncServiceClient(object):
     """
     Simple non-blocking service client.
 
@@ -147,7 +149,7 @@ class AsyncServiceClient:
         Returns False if the service is not available. Otherwise, if `cb'
         is not None and there is no error, it'll be called with the result.
         """
-        if kwargs and kwargs.keys() != ['cb']:
+        if kwargs and list(kwargs.keys()) != ['cb']:
             raise ValueError('The only valid keyword argument is "cb".')
         cb = kwargs.get('cb', None)
 

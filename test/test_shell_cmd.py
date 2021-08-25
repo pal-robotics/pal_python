@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from builtins import range
+
 import unittest
 import time
 from pal_python import shell_cmd

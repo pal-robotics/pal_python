@@ -22,7 +22,11 @@
 #   * Siegfried-A. Gevatter
 #   * Paul Mathieu
 
-import xmlrpclib
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+
+import xmlrpc.client
 
 import rospy
 import rosgraph
@@ -107,9 +111,9 @@ def stop_node(node):
             rospy.logwarn('Couldn\'t stop "%s", problem retrieving information: %s', node, msg)
             return False
     try:
-        proxy = xmlrpclib.ServerProxy(uri)
+        proxy = xmlrpc.client.ServerProxy(uri)
         result = proxy.shutdown(rospy.get_name(), 'pal_common')
-    except Exception, e:
+    except Exception as e:
         rospy.logwarn('Couldn\'t stop "%s": %s', node, str(e))
         return False
     return result[0] == 1

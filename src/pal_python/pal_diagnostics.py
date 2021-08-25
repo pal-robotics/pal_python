@@ -21,12 +21,15 @@
 # Authors:
 #   * Paul Mathieu
 
+from builtins import str
+from builtins import object
+
 import rospy
 import threading
 import diagnostic_msgs.msg as DM
 
 
-class DiagnosticPublisher:
+class DiagnosticPublisher(object):
     """
     Simple diagnostic updater.
     Example:
@@ -74,7 +77,7 @@ class DiagnosticPublisher:
         msg.header.stamp = rospy.get_rostime()
         with self.lock:
             self.entry.values = []
-            for k, v in self.fields.iteritems():
+            for k, v in list(self.fields.items()):
                 self.entry.values.append(DM.KeyValue(str(k), str(v)))
             msg.status.append(self.entry)
             self.pub.publish(msg)
