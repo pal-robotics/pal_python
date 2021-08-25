@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2021-08-25)
+------------------
 * Merge branch 'python3' into 'ferrum-devel'
   Python3 support
   See merge request common/pal_python!10
