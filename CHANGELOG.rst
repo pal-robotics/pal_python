@@ -2,6 +2,15 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'python3' into 'ferrum-devel'
+  Python3 support
+  See merge request common/pal_python!10
+* Package format 3 and added python future dependency
+* futurize'd python code
+* Contributors: Jordan Palacios
+
 0.9.18 (2021-02-01)
 -------------------
 * Fix param check for simulation
