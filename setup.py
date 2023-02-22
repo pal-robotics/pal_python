@@ -1,12 +1,23 @@
-#!/usr/bin/env python
+from setuptools import setup
 
-from distutils.core import setup
-from catkin_pkg.python_setup import generate_distutils_setup
+package_name = 'pal_python'
 
-d = generate_distutils_setup(
-    packages=['pal_python'],
-    package_dir={'': 'src'},
-    requires=[]
+setup(
+    name=package_name,
+    version='1.0.0',
+    packages=[package_name],
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer=['Jordan Palacios'],
+    maintainer_email=['jordan.palacios@pal-robotics.com'],
+    description='PAL python utils',
+    license='Proprietary',
+    tests_require=['pytest'],
+    entry_points={
+    },
 )
-
-setup(**d)
