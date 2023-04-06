@@ -4,7 +4,7 @@ package_name = 'pal_python'
 
 setup(
     name=package_name,
-    version='3.0.0',
+    version='3.0.1',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',

@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.0.1 (2023-04-06)
+------------------
 * Fixed copyright notices
 * Contributors: Jordan Palacios
 
