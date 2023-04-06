@@ -1,4 +1,17 @@
-#!/usr/bin/env python
+# Copyright (c) 2022 PAL Robotics S.L. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 
 from builtins import range
 
@@ -10,7 +23,7 @@ from pal_python import shell_cmd
 class TestShellCmd(unittest.TestCase):
 
     def __init__(self, *args):
-        #unittest.TestCase(*args)
+        # unittest.TestCase(*args)
         super(TestShellCmd, self).__init__(*args)
 
     def short_cmd_impl(self, stdin, stdout, stderr):
@@ -21,7 +34,7 @@ class TestShellCmd(unittest.TestCase):
         self.assertTrue(shcmd.is_done())
         self.assertEqual(shcmd.get_retcode(), 0)
         self.assertEqual(shcmd.get_stdout(), "5\n")
-        #Assert out can be retrieved multiple times
+        # Assert out can be retrieved multiple times
         self.assertEqual(shcmd.get_stdout(), "5\n")
         self.assertEqual(shcmd.get_stderr(), "")
 
@@ -44,7 +57,7 @@ class TestShellCmd(unittest.TestCase):
         shcmd = shell_cmd.ShellCmd(cmd)
         self.assertFalse(shcmd.is_done())
         self.assertIsNone(shcmd.get_retcode())
-        for i in range(0,4):
+        for i in range(0, 4):
             time.sleep(0.2)
             self.assertFalse(shcmd.is_done())
         shcmd.kill()
@@ -64,7 +77,7 @@ class TestShellCmd(unittest.TestCase):
         self.assertNotEqual(shcmd.get_stdout(), "")
         self.assertNotEqual(shcmd.get_stderr(), "")
 
+
 if __name__ == '__main__':
     import rosunit
     rosunit.unitrun('pal_python', 'test_shell_cmd', TestShellCmd)
-

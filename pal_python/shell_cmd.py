@@ -1,4 +1,17 @@
-#!/usr/bin/env python
+# Copyright (c) 2022 PAL Robotics S.L. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 
 import subprocess
 import tempfile
@@ -6,7 +19,9 @@ import time
 import os
 import signal
 
+
 from builtins import object
+
 
 class ShellCmd(object):
 
@@ -103,14 +118,14 @@ class ShellCmd(object):
         yield diff_content
 
     def get_retcode(self):
-        """get retcode or None if still running"""
+        """Get retcode or None if still running."""
         return self.process.poll()
 
     def is_done(self):
         return self.process.poll() is not None
 
     def wait(self, timeout=float("inf")):
-        """wait for the process to end"""
+        """Wait for the process to end."""
         start_time = time.clock()
         elapsed = 0.0
         while elapsed < timeout:
@@ -125,9 +140,7 @@ class ShellCmd(object):
         self.process.wait()
 
     def nice_kill(self, retry_time=2, max_retries=2):
-        """
-         Attempts to kill with SIGINT, returns if successful
-        """
+        """Attempt to kill with SIGINT, returns if successful."""
         retries = 0
         while (not self.is_done() and retries < max_retries):
             if retries > 0:
