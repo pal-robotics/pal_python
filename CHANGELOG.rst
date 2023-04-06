@@ -2,6 +2,20 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'fix_linters' into 'alum-devel'
+  Fix linters
+  See merge request common/pal_python!12
+* Code style fixes
+* Adding copyright notices to python files
+* Adding CONTRIBUTING and LICENSE files
+* Moving old src to .src so it's ignored by ros2 linters
+* Added standard ros2 python test files
+* Restructured to be a ROS2 pure python package
+* Remove old MODULE file
+* Contributors: Jordan Palacios
+
 1.0.0 (2021-08-25)
 ------------------
 * Merge branch 'python3' into 'ferrum-devel'
