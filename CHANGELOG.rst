@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.0.0 (2023-04-06)
+------------------
 * Merge branch 'fix_linters' into 'alum-devel'
   Fix linters
   See merge request common/pal_python!12
