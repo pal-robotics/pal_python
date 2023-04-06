@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#!/usr/bin/env python
 
 import subprocess
 import tempfile
@@ -20,7 +19,9 @@ import time
 import os
 import signal
 
+
 from builtins import object
+
 
 class ShellCmd(object):
 
@@ -117,14 +118,14 @@ class ShellCmd(object):
         yield diff_content
 
     def get_retcode(self):
-        """get retcode or None if still running"""
+        """Get retcode or None if still running."""
         return self.process.poll()
 
     def is_done(self):
         return self.process.poll() is not None
 
     def wait(self, timeout=float("inf")):
-        """wait for the process to end"""
+        """Wait for the process to end."""
         start_time = time.clock()
         elapsed = 0.0
         while elapsed < timeout:
@@ -139,9 +140,7 @@ class ShellCmd(object):
         self.process.wait()
 
     def nice_kill(self, retry_time=2, max_retries=2):
-        """
-         Attempts to kill with SIGINT, returns if successful
-        """
+        """Attempt to kill with SIGINT, returns if successful."""
         retries = 0
         while (not self.is_done() and retries < max_retries):
             if retries > 0:
