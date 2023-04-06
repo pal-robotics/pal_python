@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fixed copyright notices
+* Contributors: Jordan Palacios
+
 3.0.0 (2023-04-06)
 ------------------
 * Merge branch 'fix_linters' into 'alum-devel'
