@@ -2,6 +2,11 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* package.xml cleanup
+* Contributors: Jordan Palacios
+
 3.0.1 (2023-04-06)
 ------------------
 * Fixed copyright notices
