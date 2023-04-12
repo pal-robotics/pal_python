@@ -2,8 +2,8 @@
 Changelog for package pal_python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.0.2 (2023-04-12)
+------------------
 * package.xml cleanup
 * Contributors: Jordan Palacios
 
